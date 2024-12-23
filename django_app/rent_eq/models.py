@@ -16,7 +16,6 @@ class User(models.Model):
 class Equipment(models.Model):
     name = models.CharField(max_length=150, unique=True)
     discription = models.TextField()
-    available = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
