@@ -1,4 +1,6 @@
 __all__ = [
-    'settings'
+    "settings",
+    "db_helper",
 ]
 from .config import settings
+from .db_help import db_helper
