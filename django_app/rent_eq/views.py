@@ -26,7 +26,7 @@ class RentalViewSet(viewsets.ModelViewSet):
             equipment_id=equipment_id,
             start_date__lt=end_date,
             end_date__gt=start_date,
-        ).exist():
+        ).exists():
             return Response({"error": "Оборудование занято на эти даты"})
 
         return super().create(request, *args, **kwargs)
