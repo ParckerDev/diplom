@@ -2,8 +2,8 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    db_url: str = "sqlite+aiosqlite:///.fa_rent_db.sqlite3"
-    echo: bool = True
+    db_url: str = "sqlite+aiosqlite:///fa_rent_db.sqlite3"
+    echo:bool = True
     naming_convention: dict[str, str] = {
         "ix": "ix_%(column_0_label)s",
         "uq": "uq_%(table_name)s_%(column_0_N_name)s",
