@@ -12,7 +12,7 @@ class UserCreate(UserBase):
     pass
 
 
-class User(UserBase):
+class User_id(UserBase):
     id: int
 
     class Config:
