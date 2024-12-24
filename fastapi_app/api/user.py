@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
+from core.db_help import db_helper
 from schemas.user import User, UserCreate, UserBase
 from .crud.usercruds import create_user, get_users, delete_user, get_user_by_id, user_update
-from core.db_help import db_helper
 
 router = APIRouter(prefix="user/", tags=["USER"])
 conn = Annotated[AsyncSession, Depends(db_helper.get_session)]
