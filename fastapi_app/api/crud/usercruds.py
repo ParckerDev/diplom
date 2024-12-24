@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, delete, update
 from models import User
-from schemas.user import User, UserCreate, UserBase
+from schemas.user import User_id, UserCreate, UserBase
 
 
 async def create_user(new_user: UserCreate, session: AsyncSession) -> User:
@@ -29,6 +29,7 @@ async def delete_user(session: AsyncSession, user_id: int):
     if user is not None:
         stmt = delete(User).where(User.id == user_id)
         result = await session.execute(stmt)
+        await session.commit()
         return result
     return None
 
