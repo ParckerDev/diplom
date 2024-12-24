@@ -17,7 +17,7 @@ class DataBaseHelper:
             autocommit=False,
         )
 
-    async def get_db(self):
+    async def get_session(self):
         async with self.session_factory() as session:
             yield session
 
