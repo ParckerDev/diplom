@@ -19,8 +19,8 @@ async def get_rental_by_equipment(session: AsyncSession, equipment_id: int):
 
 async def get_rental_by_id(session: AsyncSession, rental_id: int):
     stmt = select(Rental).filter(Rental.id == rental_id)
-    rental_list = await session.scalars(stmt)
-    return rental_list.all()
+    rental = await session.scalar(stmt)
+    return rental
 
 
 async def create_rental(session: AsyncSession, new_rental: RentalCreate):
@@ -39,4 +39,12 @@ async def create_rental(session: AsyncSession, new_rental: RentalCreate):
     return new_rent
 
 
-#async def update_rental()
+async def update_rental(session: AsyncSession, rental_id: int, rental_data: RentalBase):
+    updated_rental = await get_rental_by_id(session=session, rental_id=rental_id)
+    if updated_rental:
+        stmt = update(Rental).where(Rental.id==rental_id).values(**rental_data.model_dump())
+        await session.execute(stmt)
+        await session.commit()
+        updated_rental = await session.get(Rental, rental_id)
+        return updated_rental
+    return None
