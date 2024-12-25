@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 from core.db_help import db_helper
-from schemas.equipment import EquipmentBase, EquipmentCreate
+from schemas.equipment import EquipmentBase, EquipmentCreate, Equipment_id
 from .crud.equipment_cruds import (
     create_equipment,
     delete_equipment,
@@ -11,18 +11,18 @@ from .crud.equipment_cruds import (
     update_equipment,
 )
 
-router = APIRouter(prefix="/equipment", tags=["Equipment"])
+router = APIRouter(prefix="/equipment", tags=["EQUIPMENTS"])
 conn = Annotated[AsyncSession, Depends(db_helper.get_session)]
 
 
-@router.get("", response_model=list[EquipmentBase])
-async def get_equipments(session=conn):
+@router.get("", response_model=list[Equipment_id])
+async def get_equipments(session: conn):
     equipments = await get_all_equipment(session=session)
     return equipments
 
 
-@router.post("", response_model=EquipmentBase)
-async def create_equipment_endpoint(new_equipment: EquipmentCreate, session: conn):
+@router.post("", response_model=Equipment_id)
+async def equipment_create(new_equipment: EquipmentCreate, session: conn):
     equipment = await create_equipment(new_equipment=new_equipment, session=session)
     return equipment
 

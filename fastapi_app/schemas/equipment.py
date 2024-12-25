@@ -7,7 +7,7 @@ class EquipmentBase(BaseModel):
 class EquipmentCreate(EquipmentBase):
     pass
 
-class Equipment(EquipmentBase):
+class Equipment_id(EquipmentBase):
     id: int
 
 

@@ -5,14 +5,14 @@ from schemas.user import User_id, UserCreate, UserBase
 
 
 async def create_user(new_user: UserCreate, session: AsyncSession) -> User:
-    user = UserCreate(**new_user.model_dump())
+    user = User(**new_user.model_dump())
     session.add(user)
     await session.commit()
     await session.refresh(user)
     return user
 
 
-async def get_users(session: AsyncSession) -> list[User]:
+async def get_users(session: AsyncSession) -> list[User_id]:
     stmt = select(User).order_by(User.id)
     users = await session.scalars(stmt)
     return users.all()
@@ -20,7 +20,7 @@ async def get_users(session: AsyncSession) -> list[User]:
 
 async def get_user_by_id(session: AsyncSession, user_id: int):
     stmt = select(User).where(User.id == user_id)
-    user = session.scalar(stmt)
+    user = await session.scalar(stmt)
     return user
 
 
