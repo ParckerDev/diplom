@@ -7,7 +7,7 @@ app = FastAPI()
 app.include_router(api_router)
 
 
-@app.get("")
+@app.get("/")
 async def index():
     return {"message": "api rental equipments"}
 

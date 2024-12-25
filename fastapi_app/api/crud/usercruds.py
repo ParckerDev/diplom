@@ -5,11 +5,11 @@ from schemas.user import User_id, UserCreate, UserBase
 
 
 async def create_user(new_user: UserCreate, session: AsyncSession) -> User:
-    new_user = UserCreate(**new_user.model_dump())
-    session.add(new_user)
+    user = UserCreate(**new_user.model_dump())
+    session.add(user)
     await session.commit()
-    await session.refresh(new_user)
-    return new_user
+    await session.refresh(user)
+    return user
 
 
 async def get_users(session: AsyncSession) -> list[User]:

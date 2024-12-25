@@ -12,4 +12,4 @@ class Equipment(EquipmentBase):
 
 
     class Config:
-        orm_model=True
+        from_attributes=True

@@ -11,7 +11,7 @@ from .crud.equipment_cruds import (
     update_equipment,
 )
 
-router = APIRouter(prefix="equipment/", tags=["Equipment"])
+router = APIRouter(prefix="/equipment", tags=["Equipment"])
 conn = Annotated[AsyncSession, Depends(db_helper.get_session)]
 
 

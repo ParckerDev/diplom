@@ -17,4 +17,4 @@ class Rental_id(RentalBase):
     id: int
 
     class Config:
-        orm_model = True
+        from_attributes = True
