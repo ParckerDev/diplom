@@ -11,3 +11,6 @@ conn = Annotated[AsyncSession, Depends(db_helper.get_session)]
 
 
 @router.post('', response_model=Rental_id)
+async def rental_create(session: conn, new_rent: RentalCreate):
+    rental = await create_rental(session=session, new_rental=new_rent)
+    return rental
