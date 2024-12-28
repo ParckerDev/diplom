@@ -48,3 +48,12 @@ async def update_rental(session: AsyncSession, rental_id: int, rental_data: Rent
         updated_rental = await session.get(Rental, rental_id)
         return updated_rental
     return None
+
+async def delete_rental(session: AsyncSession, rental_id: int):
+    deleted_rental = get_rental_by_id(session=session, rental_id=rental_id)
+    if deleted_rental is not None:
+        stmt = delete(Rental).where(Rental.id==rental_id)
+        result = await session.execute(stmt)
+        await session.commit()
+        return result
+    return None
