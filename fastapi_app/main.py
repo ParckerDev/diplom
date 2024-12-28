@@ -9,9 +9,10 @@ app.include_router(api_router)
 
 @app.get("/")
 async def index():
-    return {"message": "api rental equipments"}
+    return {"message": "api rental equipments docs: http://127.0.0.1:8000/docs"}
 
 
-if __name__=='__main__':
+if __name__ == "__main__":
     import uvicorn
-    uvicorn.run('main:app', reload=True)
+
+    uvicorn.run("main:app", reload=True)
