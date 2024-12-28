@@ -42,17 +42,22 @@ async def create_rental(session: AsyncSession, new_rental: RentalCreate):
 async def update_rental(session: AsyncSession, rental_id: int, rental_data: RentalBase):
     updated_rental = await get_rental_by_id(session=session, rental_id=rental_id)
     if updated_rental:
-        stmt = update(Rental).where(Rental.id==rental_id).values(**rental_data.model_dump())
+        stmt = (
+            update(Rental)
+            .where(Rental.id == rental_id)
+            .values(**rental_data.model_dump())
+        )
         await session.execute(stmt)
         await session.commit()
         updated_rental = await session.get(Rental, rental_id)
         return updated_rental
     return None
 
+
 async def delete_rental(session: AsyncSession, rental_id: int):
     deleted_rental = get_rental_by_id(session=session, rental_id=rental_id)
     if deleted_rental is not None:
-        stmt = delete(Rental).where(Rental.id==rental_id)
+        stmt = delete(Rental).where(Rental.id == rental_id)
         result = await session.execute(stmt)
         await session.commit()
         return result
