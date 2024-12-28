@@ -27,7 +27,7 @@ async def get_all_users(session: conn):
     return users
 
 
-@router.get("/user_id", response_model=User_id)
+@router.get("/{user_id}", response_model=User_id)
 async def get_user_id(session: conn, user_id: int):
     user = await get_user_by_id(session=session, user_id=user_id)
     return user
