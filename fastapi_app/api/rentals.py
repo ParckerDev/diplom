@@ -9,6 +9,7 @@ from .crud.rental_cruds import (
     get_rental_by_equipment,
     get_rental_by_id,
     delete_rental,
+    update_rental,
 )
 
 
@@ -19,6 +20,11 @@ conn = Annotated[AsyncSession, Depends(db_helper.get_session)]
 @router.post("", response_model=Rental_id)
 async def rental_create(session: conn, new_rent: RentalCreate):
     rental = await create_rental(session=session, new_rental=new_rent)
+    if not rental:
+        raise HTTPException(
+            status_code=400,
+            detail="Оборудование занято на эти даты или нет оборудования с таким id!",
+        )
     return rental
 
 
@@ -28,13 +34,17 @@ async def get_rentals(session: conn):
     return rentals
 
 
-@router.get("/{rental_id}", response_model=Rental_id)
+@router.get("/{rent_id}", response_model=Rental_id)
 async def get_rent_id(session: conn, rent_id: int):
     rental = await get_rental_by_id(session=session, rental_id=rent_id)
+    if not rental:
+        raise HTTPException(
+            status_code=404, detail=f"Аренда с id={rent_id} не найдена!"
+        )
     return rental
 
 
-@router.get("/{rental_equipment}", response_model=list[Rental_id])
+@router.get("/eq/{equipment_id}", response_model=list[Rental_id])
 async def get_rent_eq(session: conn, equipment_id: int):
     rental_list = await get_rental_by_equipment(
         session=session, equipment_id=equipment_id
@@ -45,6 +55,17 @@ async def get_rent_eq(session: conn, equipment_id: int):
 @router.delete("/{rent_id}", response_model=dict)
 async def delete_rent(session: conn, rent_id: int):
     deleted = await delete_rental(session=session, rental_id=rent_id)
+    print(deleted)
     if not deleted:
-        raise HTTPException(status_code=404, detail="Rent not found!")
+        raise HTTPException(status_code=404, detail="Аренда не найдена!")
     return {"detail": "Rental deleted successfully"}
+
+
+@router.put("/{rent_id}")
+async def update_rent(session: conn, rent_id: int, rental_data: RentalBase):
+    updated_rent = await update_rental(
+        session=session, rental_id=rent_id, rental_data=rental_data
+    )
+    if updated_rent is None:
+        raise HTTPException(status_code=404, detail="Rent not found")
+    return updated_rent
