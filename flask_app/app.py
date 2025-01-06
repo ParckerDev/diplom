@@ -1,9 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
-from resources.user_resource import UserResource, UserListResource
-from resources.equipment_resources import EquipmentResource, EquipmentListResource
-from resources.rental_resource import RentalResource, RentalListResource
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///rentals.db"
@@ -11,6 +8,9 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 api = Api(app)
+from resources.user_resource import UserResource, UserListResource
+from resources.equipment_resources import EquipmentResource, EquipmentListResource
+from resources.rental_resource import RentalResource, RentalListResource
 
 
 api.add_resource(UserListResource, "/users")
