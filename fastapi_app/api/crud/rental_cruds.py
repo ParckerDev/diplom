@@ -106,4 +106,28 @@ async def update_rental(session: AsyncSession, rental_id: int, rental_data: Rent
         )
         await session.execute(stmt)  # Выполняем обновление
         await session.commit()  # Коммитим изменения
+        updated_rental = await session.get(Rental, rental_id)
+        return updated_rental
+    return {"message": "не удалось обновить"}
+
+async def delete_rental(session: AsyncSession, rental_id: int):
+    """
+    Удаляет аренду по идентификатору.
+
+    Аргументы:
+        session (AsyncSession): Асинхронная сессия для работы с базой данных.
+        rental_id (int): Идентификатор аренды, которую нужно удалить.
+
+    Возвращает:
+        dict | None: Результат удаления, если аренда была найдена и удалена, иначе None.
+    """
+    deleted_rental = await get_rental_by_id(session=session, rental_id=rental_id)
+    if deleted_rental is not None:
+        stmt = delete(Rental).where(Rental.id == rental_id)
+        result = await session.execute(stmt)
+        await session.commit()
+        return {"result": "Delete complete"}  # Возвращаем сообщение об успешном удалении
+    else:
+        return None  # Если аренда не найдена, возвращаем None
+
        
